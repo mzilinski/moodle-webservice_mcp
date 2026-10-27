@@ -105,7 +105,7 @@ class tool_provider {
      */
     protected static function build_schema(?external_description $desc): array {
         if ($desc === null) {
-            return ['type' => 'object', 'properties' => []];
+            return ['type' => 'object', 'properties' => new \stdClass()];
         }
 
         $schema = self::generate_schema($desc);
@@ -167,6 +167,10 @@ class tool_provider {
                 unset($subschema['_required']);
 
                 $schema['properties'][$key] = $subschema;
+            }
+
+            if (empty($schema['properties'])) {
+                $schema['properties'] = new \stdClass();
             }
 
             if (!empty($requiredfields)) {

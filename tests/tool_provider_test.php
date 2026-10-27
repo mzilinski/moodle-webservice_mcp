@@ -285,7 +285,8 @@ final class tool_provider_test extends externallib_advanced_testcase {
         $schema = $method->invoke(null, null);
 
         $this->assertEquals('object', $schema['type']);
-        $this->assertEquals([], $schema['properties']);
+        // Must serialise as {} (JSON object), not [] — strict clients reject arrays.
+        $this->assertSame('{"type":"object","properties":{}}', json_encode($schema));
     }
 
     /**
